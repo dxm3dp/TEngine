@@ -48,6 +48,7 @@ def structure(context):
         except (ValueError, OSError, yaml.YAMLError) as exc:
             errors.append(f"{name}: {exc}")
     docs = list((root / "skills").rglob("*.md")) + [
+        root / "conventions" / "csharp.md",
         context.project / "AGENTS.md", context.repo / "AGENTS.md",
         context.repo / "Books" / "AI-Development-Workflow.md",
     ]

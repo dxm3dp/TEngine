@@ -11,6 +11,7 @@
 
 ## 编码边界
 
+- 新增或修改自主维护的 C# 代码前，读取并遵循 [C# 编码规范](.codex/conventions/csharp.md)，按其适用范围实施；框架用法、生命周期及验证继续遵循本文件和相关技能。
 - 业务模块通过 `GameModule` 访问；框架启动层按其现有模块初始化方式工作。
 - 业务异步使用 UniTask，明确取消、失败和资源归属。不要把框架现存的同步 API 当作不存在。
 - Sprite 优先使用 `SetSprite`；实例化资源使用 `LoadGameObjectAsync`；普通 Asset 加载与释放配对。
