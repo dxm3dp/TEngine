@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 using GameLogic;
+using Cysharp.Threading.Tasks;
 #if ENABLE_OBFUZ
 using Obfuz;
 #endif
 using TEngine;
+
 #pragma warning disable CS0436
 
 
@@ -35,8 +37,16 @@ public partial class GameApp
     
     private static void StartGameLogic()
     {
-        // GameEvent.Get<ILoginUI>().ShowLoginUI();
-        GameModule.UI.ShowUIAsync<BattleMainUI>();
+        Init().Forget();
+        
+        async UniTaskVoid Init()
+        {
+            // 初始化 Fantasy 网络框架
+            await GameClient.Instance.InitAsync(_hotfixAssembly);
+            
+            // GameEvent.Get<ILoginUI>().ShowLoginUI();
+            GameModule.UI.ShowUIAsync<BattleMainUI>();
+        }
     }
     
     private static void Release()
