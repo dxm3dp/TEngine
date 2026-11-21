@@ -32,6 +32,19 @@ namespace Fantasy
 			C2G_TestRequest_request.Tag = tag;
 			return (G2C_TestResponse)await session.Call(C2G_TestRequest_request);
 		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static async FTask<G2C_LoginResponse> C2G_LoginRequest(this Session session, C2G_LoginRequest C2G_LoginRequest_request)
+		{
+			return (G2C_LoginResponse)await session.Call(C2G_LoginRequest_request);
+		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static async FTask<G2C_LoginResponse> C2G_LoginRequest(this Session session, string userName, string password)
+		{
+			using var C2G_LoginRequest_request = Fantasy.C2G_LoginRequest.Create();
+			C2G_LoginRequest_request.UserName = userName;
+			C2G_LoginRequest_request.Password = password;
+			return (G2C_LoginResponse)await session.Call(C2G_LoginRequest_request);
+		}
 
    }
 }

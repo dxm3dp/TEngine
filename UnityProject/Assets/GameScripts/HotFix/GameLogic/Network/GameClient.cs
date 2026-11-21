@@ -53,6 +53,15 @@ namespace GameLogic
             });
             // 消息发送 方式2 推荐方式
             Session.C2G_TestMessage("TestMessage2");
+
+            var response = await Session.C2G_LoginRequest("UserName", "123456");
+            if (response.ErrorCode != 0)
+            {
+                Log.Error($"登陆时发生错误，错误码：{response.ErrorCode}");
+            }
+            Log.Debug($"登陆成功，用户名：{response.UnitId}");
+
+            await FTask.CompletedTask;
         }
 
         protected override void OnRelease()
@@ -62,16 +71,18 @@ namespace GameLogic
 
         private void OnConnectComplete()
         {
-            
+            // 添加心跳组件，每隔 3 秒发送一次心跳包
+            Session.AddComponent<SessionHeartbeatComponent>().Start(3000);
         }
 
         private void OnConnectFailed()
         {
-            
+            Session = null;
         }
         
         private void OnConnectDisconnect()
         {
+            Session = null;
         }
     }
 }

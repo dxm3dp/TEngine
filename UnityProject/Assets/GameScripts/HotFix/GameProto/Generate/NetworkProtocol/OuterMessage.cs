@@ -204,4 +204,133 @@ namespace Fantasy
         [ProtoMember(1)]
         public string Tag { get; set; }
     }
+    /// <summary>
+    /// 登陆协议
+    /// </summary>
+    [Serializable]
+    [ProtoContract]
+    public partial class C2G_LoginRequest : AMessage, IRequest
+    {
+        public static C2G_LoginRequest Create(bool autoReturn = true)
+        {
+            var c2G_LoginRequest = MessageObjectPool<C2G_LoginRequest>.Rent();
+            c2G_LoginRequest.AutoReturn = autoReturn;
+            
+            if (!autoReturn)
+            {
+                c2G_LoginRequest.SetIsPool(false);
+            }
+            
+            return c2G_LoginRequest;
+        }
+        
+        public void Return()
+        {
+            if (!AutoReturn)
+            {
+                SetIsPool(true);
+                AutoReturn = true;
+            }
+            else if (!IsPool())
+            {
+                return;
+            }
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (!IsPool()) return; 
+            UserName = default;
+            Password = default;
+            MessageObjectPool<C2G_LoginRequest>.Return(this);
+        }
+
+        public void CopyTo(ref C2G_LoginRequest other)
+        {
+            if (other == null)
+            {
+                other = Create(false);
+            }
+            other.UserName = UserName;
+            other.Password = Password;
+
+        }
+
+        public C2G_LoginRequest DeepCopy()
+        {
+            var other = Create(false);
+            CopyTo(ref other);
+            return other;
+        }
+        public uint OpCode() { return OuterOpcode.C2G_LoginRequest; } 
+        [ProtoIgnore]
+        public G2C_LoginResponse ResponseType { get; set; }
+        [ProtoMember(1)]
+        public string UserName { get; set; }
+        [ProtoMember(2)]
+        public string Password { get; set; }
+    }
+    [Serializable]
+    [ProtoContract]
+    public partial class G2C_LoginResponse : AMessage, IResponse
+    {
+        public static G2C_LoginResponse Create(bool autoReturn = true)
+        {
+            var g2C_LoginResponse = MessageObjectPool<G2C_LoginResponse>.Rent();
+            g2C_LoginResponse.AutoReturn = autoReturn;
+            
+            if (!autoReturn)
+            {
+                g2C_LoginResponse.SetIsPool(false);
+            }
+            
+            return g2C_LoginResponse;
+        }
+        
+        public void Return()
+        {
+            if (!AutoReturn)
+            {
+                SetIsPool(true);
+                AutoReturn = true;
+            }
+            else if (!IsPool())
+            {
+                return;
+            }
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (!IsPool()) return; 
+            ErrorCode = 0;
+            UnitId = default;
+            MessageObjectPool<G2C_LoginResponse>.Return(this);
+        }
+
+        public void CopyTo(ref G2C_LoginResponse other)
+        {
+            if (other == null)
+            {
+                other = Create(false);
+            }
+            other.ErrorCode = ErrorCode;
+            other.UnitId = UnitId;
+
+        }
+
+        public G2C_LoginResponse DeepCopy()
+        {
+            var other = Create(false);
+            CopyTo(ref other);
+            return other;
+        }
+        public uint OpCode() { return OuterOpcode.G2C_LoginResponse; } 
+        [ProtoMember(2)]
+        public uint ErrorCode { get; set; }
+        [ProtoMember(1)]
+        public long UnitId { get; set; }
+    }
 }
